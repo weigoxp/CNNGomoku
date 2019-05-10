@@ -24,17 +24,16 @@ class Net(nn.Module):
         self.conv7 = nn.Conv2d(64, 32, kernel_size=3, padding=1)
 
 
-        # action policy layers
+        #  policy layers
         self.act_conv1 = nn.Conv2d(32, 4, kernel_size=1)
         self.act_fc1 = nn.Linear(4*15*15, 15*15)
-
-        # an affine operation: y = Wx + b
+        #  value layers
         self.val_conv1 = nn.Conv2d(32, 2, kernel_size=1)
         self.val_fc1 = nn.Linear(2*15*15, 64)
         self.val_fc2 = nn.Linear(64, 1)
 
     def forward(self, input):
-        # max pooling over a (2, 2) window
+    # relu all the way
         x = F.relu(self.conv1(input))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
@@ -60,8 +59,7 @@ class PolicyValueNet():
     def __init__(self):
 
         self.policy_value_net = Net().cuda().float()
-        self.l2_const = 1e-4  # coef of l2 penalty
-        # the policy value net module
+        self.l2_const = 1e-4  # copied from others.
 
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.SGD(self.policy_value_net.parameters(), lr=0.001, momentum=0.9)
