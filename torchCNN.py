@@ -19,9 +19,7 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
         self.conv4 = nn.Conv2d(128, 64, kernel_size=3, padding=1)
-        self.conv5 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
-        self.conv6 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
-        self.conv7 = nn.Conv2d(64, 32, kernel_size=3, padding=1)
+        self.conv5 = nn.Conv2d(64, 32, kernel_size=3, padding=1)
 
 
         #  policy layers
@@ -39,8 +37,7 @@ class Net(nn.Module):
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
         x = F.relu(self.conv5(x))
-        x = F.relu(self.conv6(x))
-        x = F.relu(self.conv7(x))
+
 
         #  policy layers with softmax
         x_act = F.relu(self.act_conv1(x))
@@ -60,6 +57,7 @@ class PolicyValueNet():
 
         self.policy_value_net = Net().cuda().float()
         self.l2_const = 1e-4  # copied from others.
+        # the policy value net module
 
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.SGD(self.policy_value_net.parameters(), lr=0.001, momentum=0.9)
