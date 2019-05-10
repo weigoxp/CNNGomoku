@@ -7,8 +7,8 @@ import torch
 import numpy as np
 from datapacker import dataloader
 
-from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('log')
+# from torch.utils.tensorboard import SummaryWriter
+# writer = SummaryWriter('log')
 
 cuda = torch.device('cuda')
 from torchCNN import *
