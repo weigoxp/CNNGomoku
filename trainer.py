@@ -15,11 +15,11 @@ sgf = SGFflie()
 nnn = PolicyValueNet()
 
 def train():
-    loader = dataloader('training/',4)
+    loader = dataloader('training/',1)
     for step, (board, nextmove) in enumerate(loader):
 
         # feed in nn
-        nnn.train(board.float().cuda(),nextmove.cuda())
+        nnn.train(board.cuda().float(),nextmove.cuda())
         # only used to print label distribution. only an approximate since b/w has different value.
         # tmp = np.array(move[k]).reshape(15, 15)
         # labelmatrix += tmp
@@ -36,7 +36,8 @@ def evaluate(path):
     loader = dataloader(path, 1)
     for step, (board, nextmove) in enumerate(loader):
 
-        predict = nnn.classify(board.float().cuda())
+        predict = nnn.classify(board.cuda().float())
+        print("\n",predict)
         # print(predict)
         # print(nextmove.item())
 
@@ -68,7 +69,7 @@ if __name__ == '__main__':
     # labelmatrix = [[0]*15 for i in range(15)]
     # predictmatrix = [[0]*15 for i in range(15)]
 
-    accuracies = [[],[]]
+    accuracies = [[] for i in range(6)]
 
     for i in range(100):
         ## begin to train data.

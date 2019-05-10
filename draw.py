@@ -21,7 +21,6 @@ def draw(accuracies):
     plt.plot(ks,testing, color='green',label='testing',alpha=0.5)
 
     plt.legend(loc='upper right')
-    f1.show()
 
     ks = [i for i in range(len(training))]
     f2 = plt.figure(2)
@@ -33,7 +32,6 @@ def draw(accuracies):
     plt.plot(ks, testing_around1_accuracy, color='green', label='testing_around1_accuracy', alpha=0.5)
 
     plt.legend(loc='upper right')
-    f2.show()
 
     ks = [i for i in range(len(training))]
     f3 = plt.figure(3)
@@ -45,4 +43,4 @@ def draw(accuracies):
     plt.plot(ks, testing_around2_accuracy, color='green', label='testing_around2_accuracy', alpha=0.5)
 
     plt.legend(loc='upper right')
-    f3.show()
+    plt.show()
