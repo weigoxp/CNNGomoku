@@ -14,8 +14,6 @@ class Net(nn.Module):
     """policy-value network module"""
     def __init__(self):
         super(Net, self).__init__()
-        # 1 input image channel, 6 output channels, 5*5 square convolution
-        # kernel
 
         self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)

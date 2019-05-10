@@ -1,92 +1,88 @@
 import sys
-
+import torch.utils.data as data
 from SGFFileProcess import *
 import torch.nn.functional as F
-
+from draw import *
 import torch
 import numpy as np
+from datapacker import dataloader
+
+
+
 cuda = torch.device('cuda')
 from torchCNN import *
 sgf = SGFflie()
 nnn = PolicyValueNet()
 
-def train(path):
+def train():
+    loader = dataloader('training/',4)
+    for step, (board, nextmove) in enumerate(loader):
 
-    step =0
-    for filepath in path:
-        board, nextmove = sgf.createTraindataFromqipu(filepath)
-        for k in range(len(board)):
-            # 1d array to 4d tensor.
-            x = np.array(board[k]).reshape(1,1, 15, 15)
-            x = torch.from_numpy(x)
+        # feed in nn
+        nnn.train(board.float().cuda(),nextmove.cuda())
+        # only used to print label distribution. only an approximate since b/w has different value.
+        # tmp = np.array(move[k]).reshape(15, 15)
+        # labelmatrix += tmp
+        print(" Training: ", step, end='\r')
 
-            y = np.array([np.argmax(nextmove[k])])
-            y = torch.from_numpy(y)
-            # feed in nn
-            nnn.train(x.cuda().float(),y.cuda())
-
-            # only used to print label distribution. not very accurate since b/w has different value.
-            # tmp = np.array(move[k]).reshape(15, 15)
-            # labelmatrix += tmp
-
-        print("\r Training: ", step, end='')
-        step += 1
     return
 
 def evaluate(path):
     correct =0
     total = 0
-    step = 0
 
-    for filepath in path:
-        board, nextmove = sgf.createTraindataFromqipu(filepath)
-        for k in range(len(board)):
-            x = np.array(board[k]).reshape(1, 1, 15, 15)
-            x = torch.from_numpy(x)
+    loader = dataloader(path, 1)
+    for step, (board, nextmove) in enumerate(loader):
 
-            y = np.array([np.argmax(nextmove[k])])
-            y = torch.from_numpy(y)
+        predict = nnn.classify(board.float().cuda())
+        # print(predict)
+        # print(nextmove.item())
 
-            predict = nnn.classify(x.float().cuda())
+        correct += 1 if (predict == nextmove.item()) else 0
+        total += 1
+        print("Evaluating: ", step, end='\r')
 
-            tmp = np.array(nextmove[k]).reshape(15, 15)
-            # predictmatrix += predict
-
-            correct += 1 if (predict == y.item()) else 0
-            total += 1
-            print("\r Evaluating: ", step, end='')
-
-        step += 1
     return  (correct/total)
 
 
-
-
 if __name__ == '__main__':
-    np.set_printoptions(suppress=True)
-    labelmatrix = [[0]*15 for i in range(15)]
-    predictmatrix = [[0]*15 for i in range(15)]
-    testing = sgf.allFileFromDir('testing/')
-    training = sgf.allFileFromDir('training/')
-    ## begin to train data.
 
-    for i in range(1):
-        train(training)
-        print("Epoch done")
+    #np.set_printoptions(suppress=True)
+    # labelmatrix = [[0]*15 for i in range(15)]
+    # predictmatrix = [[0]*15 for i in range(15)]
+
+    accuracies = [[],[]]
+
+    for i in range(20):
+        ## begin to train data.
+        train()
+        print("\nEpoch done")
+
+        #  nnn.policy_value_net = torch.load('model.pth')
+        # evaluate every 2 epochs
+
+        if i%2 ==0:
+            training_accuracy = evaluate('training/')
+            testing_accuracy = evaluate('testing/')
+
+            print("\ntraining_accuracy" ,training_accuracy)
+            print("\ntesting_accuracy",testing_accuracy)
+
+            #draw
+            accuracies[0].append(training_accuracy)
+            accuracies[1].append(testing_accuracy)
+
+            draw(accuracies)
+
     torch.save(nnn.policy_value_net, 'model.pth')
 
   #  print(labelmatrix)
 
     # np.savetxt('labels.txt', labelmatrix,'%5.0f', delimiter=',')
-
-
-   # evaluate training data.
-    #  nnn.policy_value_net = torch.load('model.pth')
-
-    training_accuracy = evaluate(training)
-    testing_accuracy = evaluate(testing)
-
-    print(training_accuracy)
-    print(testing_accuracy)
-
     # np.savetxt('predict.txt', predictmatrix, delimiter=',')
+
+
+
+
+
+

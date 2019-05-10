@@ -1,9 +1,6 @@
 
 """Author: zheng.tq@bankcomm.com"""
-
-'''
-文件处理方法及文件-棋谱互相转换方法
-'''
+# author as above. read from .sgf real play data
 
 import time
 import os
@@ -15,7 +12,6 @@ class SGFflie():
         POS：棋盘坐标的对应字母顺序
         """
         self.POS = 'abcdefghijklmno'
-        self.savepath = 'save/'
 
     def openfile(self, filepath):
         """打开文件,读取棋谱"""
@@ -80,15 +76,16 @@ class SGFflie():
 
         return train_x, train_y
 
-    def createTraindata(self):
+    def createTraindata(self, path):
         """生成训练数据"""
-        filepath = self.allFileFromDir(self.savepath)
+        filepath = self.allFileFromDir(path)
         train_x = []
         train_y = []
         for path in filepath:
             x, y = self.createTraindataFromqipu(path)
-            train_x = train_x + x
-            train_y = train_y + y
+
+            train_x.extend(x)
+            train_y.extend(y)
         return train_x, train_y
 
     def allFileFromDir(self, Dirpath):
