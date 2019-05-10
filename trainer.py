@@ -7,7 +7,8 @@ import torch
 import numpy as np
 from datapacker import dataloader
 
-
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter('log')
 
 cuda = torch.device('cuda')
 from torchCNN import *
@@ -37,8 +38,6 @@ def evaluate(path):
     for step, (board, nextmove) in enumerate(loader):
 
         predict = nnn.classify(board.cuda().float())
-        # print(predict)
-        # print(nextmove.item())
 
         correct += 1 if (predict == nextmove.item()) else 0
         b16, b25 = around(predict,nextmove.item())
@@ -63,10 +62,17 @@ def around(predict, label):
 
 
 if __name__ == '__main__':
-
+# draw label/predition matrix
     #np.set_printoptions(suppress=True)
     # labelmatrix = [[0]*15 for i in range(15)]
     # predictmatrix = [[0]*15 for i in range(15)]
+
+# enable tensorboard to draw NN structure
+    # model = Net()
+    # dummy_input = torch.rand(20, 1, 15, 15)
+    # with SummaryWriter(comment='LeNet') as w:
+    #     w.add_graph(model, (dummy_input),operator_export_type="RAW")
+
 
     accuracies = [[] for i in range(6)]
 
