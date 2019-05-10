@@ -1,0 +1,54 @@
+\documentclass[11pt, twocolumn]{article}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{sectsty}
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12}{16}\bfseries}{\thesection}{1em}{}
+\usepackage{multicol}
+\setlength{\columnsep}{0.8 cm}
+
+\begin{document}
+\title{Csc 665 final project report}
+\author{Xiaowei Xu}
+
+\maketitle
+
+\section{Abstract (you can skip reading this part ...)}
+The Google's AlphaGo shocked world by beating world Go champions. It collects playing data from pro matches for months and trains the model. AlphaZero collects all data from self-playing games, after 8 hours training it beats AlphaGo. Does it mean proper model is more important than "good" training data? Yes or no, it is impressive enough.\\
+Gomoku is a board game which plays on Go board with 15*15 grid. Players take turn placing black and white pieces on an empty grid intersection. The first player who make 5 pieces in a row horizontally, vertically or diagonally wins the game. 
+In this project, I try to reproduce partial idea of AlphaZero paper on Gomoku and learn corresponding techniques in the process.
+
+\section{Achievement}
+I build a working model for Gomoku, and basically fulfill the goal of proposal: reproduce partial idea of AlphaZero. From my personal learning perspective, i learned how to build NN by Pytorch, including GPU training and custom dataloader; some basic knowledge of convolutional NN; and various techniques while actual implementation.
+
+\section{Collection of play data}
+Influenced by self-training philosophy of Alpha Zero, my original plan is to collect play data by two Min-max AIs contest with each other, with tuned depth and random choices among best several moves. Intuitively randomness is guaranteed in this case.\newline
+
+However, after some practice, this idea seems not practical. In fact even with the "random setting" mentioned above, the evaluation function deeply restricted the randomness and variety of playing data. Due to the simplicity of evaluation function, self-playing moves tend to crowded with same colored pieces in a "dumb" way, Moreover, those games usually end very early because of the randomness. Lastly, generating those moves takes much longer than i expected. \newline
+
+As a result, i collect sgf format play data from pro plays online, and use open-source reader class to cast them into array, then transform them into Pytorch tensor. The advantage is data is well distributed and does not emphasize on early stage of game.
+
+\section{Features and Labels}
+Feature is single board of a 15*15 matrix, which black pieces are represented as 2, white pieces are represented as 1. 
+Label is also single 225 1-d tensor, on which there is only one non-zero value 2, representing next black move of the corresponding feature board. As it shows, the features and labels only represents black moves so we don't have to deal with extra features for representing who is current player (which is quite important in board game). \newline
+Features are transformed in form of (batch, 1, height, width) as required by Pytorch; labels are transformed into 0-d tensor, carries the argmax of next move. The neural network will predict one of 225 classes, each for 1 spot on the board.
+
+\section{Neural Network}
+ Rather than building both policy and value network, i only make use of the policy network in this project. ( if time allows i'll add value NN too) Following the paper and some open source implementations, i use convolutional NN with relu activation function between each layers. From my limited understanding, CNN has a good performance on identifying gomoku piece patterns, as it is very similar to discovering the relationship between nearby pixels in image classification. \newline
+ There are 5 CNN layers with 3*3 filter, followed by one layer CNN with 1*1. After 1 full connect layer, it outputs with softmax function. 
+
+
+
+\section{Evaluation}
+Total play data are from about 2300 games. I split 2000 of them to training data and 300 of them to testing data. \newline
+The accuracy is based on if the prediction is same as the label, and not very precisely, if the prediction is within some range of the label on the board. (1 spot away or 2 spot away)
+\section{Future work}
+As we discussed in meeting, the labels collection from actual games are more complex and hard to find pattern, which is not as good for practice as if we generate labels from evaluation function, since it's harder to build a working model base on my ability.
+In short term, i will feed evaluation function score along with the best prediction into the NN as labels and implement both regression and classification. Also if in need i can augment the board data by flip and rotation.
+In long term, i still hope to reproduce the original Alpha-zero implementation, This is definitely a good practice, from what i learned so far. In the very end, thanks for the term and i learned a lot from you! 
+
+\section{Reference}
+..
+\end{document}
