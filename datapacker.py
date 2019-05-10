@@ -10,7 +10,7 @@ sgf = SGFflie()
 def dataloader(path, MINIBATCH_SIZE):
 
     board, nextmove = sgf.createTraindata(path)
-    print("data loaded, board nums: ", len(board))
+    print("\ndata loaded, board nums: ", len(board))
 
     # transform data from here.
     x = np.array(board).reshape(len(board), 1, 15, 15)

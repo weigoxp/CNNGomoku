@@ -53,10 +53,10 @@ if __name__ == '__main__':
 
     accuracies = [[],[]]
 
-    for i in range(20):
+    for i in range(100):
         ## begin to train data.
         train()
-        print("\nEpoch done")
+        print("\nEpoch done", i)
 
         #  nnn.policy_value_net = torch.load('model.pth')
         # evaluate every 2 epochs
