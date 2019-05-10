@@ -20,13 +20,18 @@ class Net(nn.Module):
         self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
+        self.conv4 = nn.Conv2d(128, 64, kernel_size=3, padding=1)
+        self.conv5 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.conv6 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.conv7 = nn.Conv2d(64, 32, kernel_size=3, padding=1)
+
 
         # action policy layers
-        self.act_conv1 = nn.Conv2d(128, 4, kernel_size=1)
+        self.act_conv1 = nn.Conv2d(32, 4, kernel_size=1)
         self.act_fc1 = nn.Linear(4*15*15, 15*15)
 
         # an affine operation: y = Wx + b
-        self.val_conv1 = nn.Conv2d(128, 2, kernel_size=1)
+        self.val_conv1 = nn.Conv2d(32, 2, kernel_size=1)
         self.val_fc1 = nn.Linear(2*15*15, 64)
         self.val_fc2 = nn.Linear(64, 1)
 
@@ -35,6 +40,10 @@ class Net(nn.Module):
         x = F.relu(self.conv1(input))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
+        x = F.relu(self.conv5(x))
+        x = F.relu(self.conv6(x))
+        x = F.relu(self.conv7(x))
 
         #  policy layers with softmax
         x_act = F.relu(self.act_conv1(x))
