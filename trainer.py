@@ -15,12 +15,16 @@ from torchCNN import *
 sgf = SGFflie()
 nnn = PolicyValueNet()
 
-def train():
-    loader = dataloader('training/',3)
+def train(gpu = False):
+    loader = dataloader('training/',3 )
     for step, (board, nextmove) in enumerate(loader):
 
         # feed in nn
-        nnn.train(board.cuda().float(),nextmove.cuda())
+        if gpu is True:
+            nnn.train(board.cuda().float(),nextmove.cuda())
+        else:
+            nnn.train(board.float(), nextmove)
+
         # only used to print label distribution. only an approximate since b/w has different value.
         # tmp = np.array(move[k]).reshape(15, 15)
         # labelmatrix += tmp
@@ -29,7 +33,7 @@ def train():
 
     return
 
-def evaluate(path):
+def evaluate(path , gpu = False):
     correct =0
     total = 0
     around1 = 0
@@ -37,7 +41,10 @@ def evaluate(path):
     loader = dataloader(path, 1)
     for step, (board, nextmove) in enumerate(loader):
 
-        predict = nnn.classify(board.cuda().float())
+        if gpu is True:
+            predict = nnn.classify(board.cuda().float())
+        else:
+            predict = nnn.classify(board.float())
 
         correct += 1 if (predict == nextmove.item()) else 0
         b16, b25 = around(predict,nextmove.item())
