@@ -53,9 +53,9 @@ class Net(nn.Module):
 
 class PolicyValueNet():
     """policy-value network """
-    def __init__(self ,gpu = False):
+    def __init__(self ,gpu = True):
         if gpu is True:
-            self.policy_value_net = Net().cuda().float()
+            self.policy_value_net = Net().float().cuda()
         else:
             self.policy_value_net = Net().float()
         self.l2_const = 1e-4  # copied from others.

@@ -15,13 +15,13 @@ from torchCNN import *
 sgf = SGFflie()
 nnn = PolicyValueNet()
 
-def train(gpu = False):
+def train(gpu = True):
     loader = dataloader('training/',3 )
     for step, (board, nextmove) in enumerate(loader):
-
+        print(board.size())
         # feed in nn
         if gpu is True:
-            nnn.train(board.cuda().float(),nextmove.cuda())
+            nnn.train(board.float().cuda(),nextmove.cuda())
         else:
             nnn.train(board.float(), nextmove)
 
@@ -33,7 +33,7 @@ def train(gpu = False):
 
     return
 
-def evaluate(path , gpu = False):
+def evaluate(path , gpu = True):
     correct =0
     total = 0
     around1 = 0
@@ -42,7 +42,7 @@ def evaluate(path , gpu = False):
     for step, (board, nextmove) in enumerate(loader):
 
         if gpu is True:
-            predict = nnn.classify(board.cuda().float())
+            predict = nnn.classify(board.float().cuda())
         else:
             predict = nnn.classify(board.float())
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     # with SummaryWriter(comment='LeNet') as w:
     #     w.add_graph(model, (dummy_input),operator_export_type="RAW")
 
-
+    torch.cuda.empty_cache()
     accuracies = [[] for i in range(6)]
 
     for i in range(100):
