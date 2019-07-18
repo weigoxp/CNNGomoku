@@ -2,11 +2,13 @@
 
 *Gomoku game training model based on historic pro games and Covolutional neural network*
 
-You need pytorch to run this program: https://pytorch.org/
+See cnndes.pdf for detailed description.
 
-The program runs on cpu by default. To run on CUDA, enable gpu mode of train() evaluate() in trainer.py and PolicyValueNet() in torchCNN.py\
+1. You need pytorch to run this program: https://pytorch.org/
 
-More training games are in sgf.zip 
+2. The program runs on cpu by default. To run on CUDA, enable gpu mode of train() evaluate() in trainer.py and PolicyValueNet() in torchCNN.py\
+
+3. More training games are in sgf.zip 
 
 Updates:
 
