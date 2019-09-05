@@ -95,10 +95,10 @@ overfitting, Testing accuracies get stable as training keeps increasing.
 Here is accuracies for 2000 games training set:
 
 ![Accuracies after 20
-epochs[]{label="fig:label"}](myplot1.png){#fig:label}
+epochs[]{label="fig:label"}](myplot1.png)
 
 ![Around 1 accuracies after 20
-epochs[]{label="fig:label"}](myplot2.png){#fig:label}
+epochs[]{label="fig:label"}](myplot2.png)
 
 After realizing the bottleneck could be the shortage of training data, i
 collected 5000 more games for the training set, end up with an obvious
@@ -107,10 +107,10 @@ after 10 epochs. After epoch 10, the model shows sign of overfitting.
 Here is accuracies for 7000 games training set:
 
 ![Accuracies after 11
-epochs[]{label="fig:label"}](more1.png){#fig:label}
+epochs[]{label="fig:label"}](more1.png)
 
 ![Around 1 accuracies after 11
-epochs[]{label="fig:label"}](more2.png){#fig:label}
+epochs[]{label="fig:label"}](more2.png)
 
 For comparison, in a related paper \[1\] the group gets 42% testing
 accuracy by 10 layers CNN, with 66000 games training data, and TitanX
