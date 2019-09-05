@@ -2,7 +2,7 @@
 
 1. You need pytorch to run this program: https://pytorch.org/
 
-2. The program runs on cpu by default. To run on CUDA, enable gpu mode of train() evaluate() in trainer.py and PolicyValueNet() in torchCNN.py
+2. The program runs on CPU by default. To run on CUDA, enable GPU mode of train() evaluate() in trainer.py and PolicyValueNet() in torchCNN.py
 
 3. More training games are in sgf.zip 
 
