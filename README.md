@@ -12,7 +12,7 @@ Updates:
 1.  added rotated/flipped data. pytorch supports online data augmentation only for img but not tensor.
 
 ---
-author:
+Author:
 - Xiaowei Xu
 ---
 
