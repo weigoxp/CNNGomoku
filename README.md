@@ -1,4 +1,4 @@
-# cnnGomoku
+# CnnGomoku
 
 *Gomoku game training model based on historic pro games and Covolutional neural network*
 
