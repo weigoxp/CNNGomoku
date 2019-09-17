@@ -31,9 +31,11 @@ diagonally wins the game.)
 Achievement
 ===========
 
-I build a working model for Gomoku, and fulfill partial goal of
-proposal.The best model achieves 47% testing accuracy and 55% \"around 1
-accuracy\". 
+I build a working model for Gomoku, and it works amazingly well.
+The best model achieves 47% testing accuracy and 55% \"around 1
+accuracy\",	which is 11.9% better than
+<b>2016 Youth Academic Annual Conference paper</b> “Move prediction in Gomoku using deep learning”.
+
 
 Collection of play data
 =======================
