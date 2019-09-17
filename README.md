@@ -19,17 +19,14 @@ Author:
 Abstract
 ========
 
-The Google's AlphaGo shocked world by beating world Go champions. It
-collects playing data from pro matches for months and trains the model.
-AlphaZero collects all data from self-playing games, after 8 hours
-training it beats AlphaGo. Does it mean proper model is more important
-than \"good\" training data? Yes or no, it is impressive enough.\
-Gomoku is a board game which plays on Go board with 15\*15 grid. Players
+This project is inspired by Deep Mind's Alpha Go paper. 
+In this project, the goal is to apply Alpha Go's partial techniques (without using Monte-Carlo tree)
+on Gomoku and constuct a suitable neural network structure to achieve good results. 
+\
+(Gomoku is a board game which plays on Go board with 15\*15 grid. Players
 take turn placing black and white pieces on an empty grid intersection.
 The first player who make 5 pieces in a row horizontally, vertically or
-diagonally wins the game. In this project, I try to reproduce partial
-idea of AlphaZero paper on Gomoku and learn corresponding techniques in
-the process.
+diagonally wins the game.)
 
 Achievement
 ===========
